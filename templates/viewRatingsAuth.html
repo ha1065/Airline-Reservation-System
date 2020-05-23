@@ -1,0 +1,13 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
+<h1>Feedback for {{airlineName}} {{flightNum}} : </h1>
+
+<ol>
+    {% for data in feedbackData %}
+        <li> <strong>Customer Email:</strong> {{data.email}}, <strong>Rating out of 10:</strong> {{data.rating}}, <strong>Comments:</strong> {{data.comments}} </li>
+    {% endfor %}
+    </ol>
+
+<h4>Average Rating out of 10: {{averageRating}}</h4>
+
+<br><br>
+<a href="/home">Back to home</a>

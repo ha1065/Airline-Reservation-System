@@ -1,0 +1,28 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
+<h1>Booking Info</h1>
+<li>Ticket ID = {{ticketID}}</li>
+<li>Customer Email = {{username}}</li>
+<li>Airline Name = {{airlineName}}</li>
+<li>Flight Number = {{flightNum}}</li>
+<li>Updated Price = {{soldPrice}}</li>
+
+<form action="/paymentInsertCustomer" method="POST">
+	<input type="text" name="cardType" placeholder="Card Type" required> <br>
+	<input type="text" name="cardNumber" placeholder="Card Number" required> <br>
+    <input type="text" name="NameonCard" placeholder="Cardholder Name" required> <br>
+    <input type="text" name="expDate" placeholder="Expiration Date(YYYY-MM)" required> <br> <br>
+    <input type="hidden" name ="ticketID" value={{ticketID}}>
+    <input type="hidden" name ="CustomerEmail" value={{username}}>
+    <input type="hidden" name ="airline" value={{airlineName}}>
+    <input type="hidden" name ="flightNum" value={{flightNum}}>
+    <input type="hidden" name ="updatedPrice" value={{soldPrice}}>
+
+    
+    
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+	<input type="submit" value="Purchase"> <br>
+</form>
+
+<a href="/register">Back to register page</a>

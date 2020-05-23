@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/base.css') }}">
+
+<head>
+  <meta charset="utf-8" />
+  <title>{{ title }}</title>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+</head>
+
+<body>
+  <center>
+
+    <h1>{{agent}}'s Top Customers</h1>
+  </center>
+
+
+  <center>
+    <canvas id="chart" width="600" height="400"></canvas>
+    <canvas id="chart1" width="600" height="400"></canvas>
+    <h5 style="text-align:left;float:left;margin-left:200px;">Top 5 customers based on amount of commission recieved in the last year</h5> 
+    <h5 style="text-align:right;float:right;margin-right:200px">Top 5 customers based on tickets boughts in the past 6 months</h5> 
+    <hr style="clear:both;"/>
+
+    <script>
+
+      var barData = {
+        labels: [{% for item in BA1y %}
+      "{{ item }}",
+        {% endfor %}],
+      datasets: [
+        {
+          fillColor: "rgba(151,187,205,0.2)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          data: [{% for value in count1y %}
+          {{ value }},
+        {% endfor %}
+      ]
+      }
+    ]
+  }
+      var mychart1 = document.getElementById("chart1").getContext("2d");
+      steps = 10
+      max = {{ max1y }}
+
+      // draw bar chart
+      new Chart(mychart1).Bar(barData, {
+        scaleOverride: true,
+        scaleSteps: steps,
+        scaleStepWidth: Math.ceil(max / steps),
+        scaleStartValue: 0,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines: true,
+        barShowStroke: true,
+        scaleShowLabels: true
+      }
+      );
+    </script>
+
+    <script>
+      var barData = {
+        labels: [{% for item in BA6m %}
+      "{{ item }}",
+        {% endfor %}],
+      datasets: [
+        {
+          fillColor: "rgba(151,187,205,0.2)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          data: [{% for value in count6m %}
+        {{ value }},
+        {% endfor %}
+      ]
+    }
+  ]
+}
+      var mychart = document.getElementById("chart").getContext("2d");
+      steps = 10
+      max = {{ max6m }}
+
+      // draw bar chart
+      new Chart(mychart).Bar(barData, {
+        scaleOverride: true,
+        scaleSteps: steps,
+        scaleStepWidth: Math.ceil(max / steps),
+        scaleStartValue: 0,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines: true,
+        barShowStroke: true,
+        scaleShowLabels: true
+      }
+      );
+    </script>
+  </center>
+  <h4>Top 5 Customers Last Year (Commission):</h4> <br> <br>
+  {% for item in BA1y %} {{item}} <br> {% endfor %} <br>
+  <h4>Top 5 Customers Past 6 Months (Tickets Bought):</h4> <br> <br>
+
+  {% for item in BA6m %} {{item}} <br> {% endfor %} <br>
+
+
+  <a href="/home"> Home </a>

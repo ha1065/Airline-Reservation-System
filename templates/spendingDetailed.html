@@ -1,0 +1,50 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
+<h1> Detailed Spending: From {{start}} to {{end}}</h1>
+
+<h4> Total Amount of Spending:</h4> ${{totalSpending}} <br> <br>
+
+<!-- <h4> Total Number of Tickets Sold:</h4> {{dateRange}} <br> <br> -->
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+
+<canvas id="chart" width="600" height="400"></canvas>
+<h1>Month Wise Spending from {{start}} to {{end}}</h1>
+
+<script>
+        var barData = {
+         labels : [{% for item in labels %}
+      "{{ item }}",
+      {% endfor %}],
+         datasets : [
+            {
+                  fillColor: "rgba(151,187,205,0.2)",
+                  strokeColor: "rgba(151,187,205,1)",
+                  pointColor: "rgba(151,187,205,1)",
+                  data : [{% for value in data %}
+                {{value}},
+              {% endfor %}
+                ]
+            }
+          ]
+        }
+         var mychart = document.getElementById("chart").getContext("2d");
+             steps = 10
+             max = {{max}}
+             
+           // draw bar chart
+           new Chart(mychart).Bar(barData, {
+             scaleOverride: true,
+             scaleSteps: steps,
+             scaleStepWidth: Math.ceil(max / steps),
+             scaleStartValue: 0,
+             scaleShowVerticalLines: true,
+             scaleShowGridLines : true,
+             barShowStroke : true,
+             scaleShowLabels: true
+             }
+           );
+          </script>
+      
+
+<a href="/spending">General Spending Details</a> <br>
+<a href="/home">Return to Home</a>

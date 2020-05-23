@@ -1,0 +1,59 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
+<h1>Reports:</h1>
+
+<h4>Total amount of tickets sold for the past year:</h4> {{lastYear.count}} <br> <br>
+
+
+
+<h4>Total amount of tickets sold for the past month:</h4> {{lastMonth.count}} <br> <br>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+
+<canvas id="chart" width="600" height="400"></canvas>
+<h1>Month Wise tickets sold for last year</h1>
+
+<script>
+        var barData = {
+         labels : [{% for item in labels %}
+      "{{ item }}",
+      {% endfor %}],
+         datasets : [
+            {
+                  fillColor: "rgba(151,187,205,0.2)",
+                  strokeColor: "rgba(151,187,205,1)",
+                  pointColor: "rgba(151,187,205,1)",
+                  data : [{% for value in data %}
+                {{value}},
+              {% endfor %}
+                ]
+            }
+          ]
+        }
+         var mychart = document.getElementById("chart").getContext("2d");
+             steps = 10
+             max = {{max}}
+             
+           // draw bar chart
+           new Chart(mychart).Bar(barData, {
+             scaleOverride: true,
+             scaleSteps: steps,
+             scaleStepWidth: Math.ceil(max / steps),
+             scaleStartValue: 0,
+             scaleShowVerticalLines: true,
+             scaleShowGridLines : true,
+             barShowStroke : true,
+             scaleShowLabels: true
+             }
+           );
+          </script>
+
+
+<h3>Enter beginning and ending dates and calculate total tickets sold:</h3> 
+<form action="/viewReportsDate" method="GET">
+	<input type="text" name="start" placeholder="Start Date (YYYY-MM-DD)" required> <br>
+	<input type="text" name="end" placeholder="End Date (YYYY-MM-DD)" required> <br>
+	<input type="submit" value="Calculate Total Tickets Sold">
+</form>
+
+
+<a href="/home">Home</a>

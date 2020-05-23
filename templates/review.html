@@ -1,0 +1,21 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/base.css') }}">
+<h1>Submit your feedback</h1>
+
+<form action="/reviewAuth" method="POST">
+    <input type="text" name="airlineName" placeholder="Airline name" required> <br>
+    <input type="number" name="flightNumber" placeholder="Flight Number" required> <br>
+    <input type="number" name="rating" placeholder="Rating out of 10" required> <br>
+    
+    <div> <br>
+        <textarea name="comments" id="comments" style="font-family:sans-serif;font-size:1.2em;" rows="7" cols="23">
+        </textarea>
+    </div>
+    <br>
+
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{error}}</p>
+    {% endif %}
+    <input type="submit" value="Submit"> <br>
+</form>
+
+<a href="/home">Back to home</a>
